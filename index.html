@@ -950,7 +950,7 @@
 
           if(opt.correct){
             btn.classList.add('correct');
-            feedback.textContent=`Correct ? — Running Score: ${state.correct+1} / ${state.total}`;
+            feedback.textContent=`ممتاز اعطوه ريال ✓ Running Score: ${state.correct+1} / ${state.total}`;
             feedback.classList.remove('incorrect');
             feedback.classList.add('correct');
             state.correct += 1;
@@ -958,7 +958,7 @@
             btn.classList.add('incorrect');
             const cor=[...list.querySelectorAll('button.option')].find(b=>b.dataset.correct==='true');
             if(cor) cor.classList.add('correct');
-            feedback.textContent=`Incorrect ? — Correct answer: ${correctText}`;
+            feedback.textContent=`خطأ راجع راجع ✗ الاجابة الصحيحة: ${correctText}`;
             feedback.classList.remove('correct');
             feedback.classList.add('incorrect');
             state.incorrect += 1;
@@ -1027,4 +1027,5 @@
 
 
 ÅÐÇ ÊÈÛì ÎíÇÑ ÅÖÇÝí: **íÎáØ ÇáÃÞÓÇã äÝÓåÇ** (áßä ßá ÞÓã íÙá ãÚ ÃÓÆáÊå)¡ Þáøí æ ÃÖíÝå áß ÈÏæä ãÇ ÃáãÓ ÇáÃÓÆáÉ.
+
 
