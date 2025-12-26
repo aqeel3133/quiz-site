@@ -1,0 +1,1028 @@
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comprehensive Pathology MCQ ó Live Scoreboard (Extended)</title>
+  <style>
+    :root { --primary:#0b74de; --correct:#1a7f37; --incorrect:#b3261e; --bg:#f7f9fc; --card:#fff; }
+    body {font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); margin:0}
+    header {background:var(--primary); color:#fff; padding:18px 24px}
+    header h1 {margin:0; font-size:1.25rem}
+    main {max-width: 1040px; margin: 24px auto; padding: 0 16px}
+    .card {background:var(--card); border-radius:12px; box-shadow: 0 6px 18px rgba(0,0,0,.08); padding:18px; margin: 0 0 16px}
+    .q-title {font-weight:600; margin-bottom:10px}
+    .options {list-style:none; padding:0; margin:0}
+    .options li {margin:8px 0}
+    button.option {width:100%; text-align:left; background:#f2f5f9; border:1px solid #d9e2ec; border-radius:10px; padding:12px; cursor:pointer; transition:all .15s}
+    button.option:hover {background:#e8eef7}
+    button.option.correct {border-color: var(--correct); background:#eaf6ef}
+    button.option.incorrect {border-color: var(--incorrect); background:#fdeaea}
+    .feedback {margin-top:10px; font-weight:600}
+    .feedback.correct {color: var(--correct)}
+    .feedback.incorrect {color: var(--incorrect)}
+    .controls {display:flex; gap:8px; align-items:center; margin-bottom:16px; flex-wrap:wrap}
+    .pill {background:#eef2ff; color:#334155; border:1px solid #dbeafe; padding:6px 10px; border-radius:999px; font-size:.9rem}
+    .section {font-weight:700; color:#0b74de; margin:16px 0 8px}
+    .summary {background:#fff; border-left:6px solid var(--primary); padding:16px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,.06); margin: 20px 0}
+    .summary h2 {margin:0 0 8px; font-size:1.1rem}
+    .summary p {margin:4px 0}
+    .btn {background:var(--primary); color:#fff; border:none; padding:10px 14px; border-radius:10px; cursor:pointer}
+    .btn.secondary {background:#64748b}
+    .muted {color:#6b7280}
+    .scoreboard {position:sticky; top:8px; z-index:2;}
+    .score {display:flex; gap:12px; align-items:center}
+    .score span {display:inline-block; background:#fff; border:1px solid #e5e7eb; padding:6px 10px; border-radius:12px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>informatex(Extended)</h1>
+</header>
+<main>
+  <div class="controls card scoreboard">
+    <div class="pill">aqeelllo.</div>
+    <button class="pill" onclick="shuffleAll()">Shuffle questions</button>
+    <div class="score">
+      <span id="liveScore">Score: 0 / TOTAL (0%)</span>
+      <span id="liveCorrect">Correct: 0</span>
+      <span id="liveIncorrect">Incorrect: 0</span>
+      <span id="liveProgress">Progress: 0 / TOTAL</span>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn" onclick="retryAll()">Retry</button>
+      <button class="btn secondary" onclick="shuffleAll()">Shuffle & Retry</button>
+    </div>
+  </div>
+  <div id="quiz"></div>
+  <div id="summary" class="summary" style="display:none"></div>
+</main>
+
+<script>
+  const QUESTIONS = [];
+
+  // =========================
+  // Emerging Trends in Healthcare: AI, IoT, and Big Data
+  // =========================
+  QUESTIONS.push({title: 'Emerging Trends in Healthcare: AI, IoT, and Big Data', options: [], isSection: true});
+
+  QUESTIONS.push({
+    title: "Which of the following describes the primary role of artificial intelligence in healthcare delivery?",
+    options: [
+      {text: "A. Data storage", correct: false},
+      {text: "B. Task automation", correct: false},
+      {text: "C. Clinical decision support", correct: true},
+      {text: "D. Replacement of healthcare professionals", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is a common application of artificial intelligence used to enhance patient safety?",
+    options: [
+      {text: "A. Bed positioning", correct: false},
+      {text: "B. Staff scheduling", correct: false},
+      {text: "C. Medical billing", correct: false},
+      {text: "D. Medication error prevention", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following best represents the ìVelocityî component of Big Data in healthcare?",
+    options: [
+      {text: "A. Data accuracy", correct: false},
+      {text: "B. Data diversity", correct: false},
+      {text: "C. Real-time data generation", correct: true},
+      {text: "D. Long-term data storage systems", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following data sources contributes genomic information to Big Data analytics in healthcare?",
+    options: [
+      {text: "A. Wearable sensors", correct: false},
+      {text: "B. Clinical notes", correct: false},
+      {text: "C. Public health reports", correct: false},
+      {text: "D. Genetic sequencing databases", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following illustrates an Internet of Things application used for continuous patient monitoring?",
+    options: [
+      {text: "A. Electronic prescriptions", correct: false},
+      {text: "B. Diagnostic imaging software", correct: false},
+      {text: "C. Wearable health trackers", correct: true},
+      {text: "D. Population health dashboards", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following demonstrates how IoT technology transforms nursing workflows?",
+    options: [
+      {text: "A. Manual chart audits", correct: false},
+      {text: "B. Shift-based rounding", correct: false},
+      {text: "C. Automated vital sign capture", correct: true},
+      {text: "D. Retrospective clinical reporting", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following Big Data applications supports identifying health trends across communities?",
+    options: [
+      {text: "A. Precision dosing", correct: false},
+      {text: "B. Clinical documentation", correct: false},
+      {text: "C. Population health management", correct: true},
+      {text: "D. Individual patient monitoring", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following benefits results from integrating AI, Big Data, and IoT technologies in nursing practice?",
+    options: [
+      {text: "A. Expanded administrative tasks", correct: false},
+      {text: "B. Increased manual documentation", correct: false},
+      {text: "C. Enhanced clinical accuracy", correct: true},
+      {text: "D. Reduced interdisciplinary collaboration", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following explains how artificial intelligence supports clinical decision-making?",
+    options: [
+      {text: "A. Data archiving", correct: false},
+      {text: "B. Workflow scheduling", correct: false},
+      {text: "C. Pattern recognition in patient data", correct: true},
+      {text: "D. Manual interpretation of diagnostic results", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following represents an early warning system supported by artificial intelligence?",
+    options: [
+      {text: "A. Vital sign charting", correct: false},
+      {text: "B. Patient admission records", correct: false},
+      {text: "C. Predictive alerts for patient deterioration", correct: true},
+      {text: "D. Retrospective quality improvement reports", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following describes the ìVarietyî characteristic of Big Data in healthcare?",
+    options: [
+      {text: "A. Data speed", correct: false},
+      {text: "B. Data accuracy", correct: false},
+      {text: "C. Multiple data formats", correct: true},
+      {text: "D. High-value clinical insights", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following ensures that healthcare data can be trusted for clinical decision-making?",
+    options: [
+      {text: "A. Volume", correct: false},
+      {text: "B. Velocity", correct: false},
+      {text: "C. Variety", correct: false},
+      {text: "D. Veracity", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following Big Data uses supports evidence-based improvements in care delivery?",
+    options: [
+      {text: "A. Telemonitoring", correct: false},
+      {text: "B. Patient engagement", correct: false},
+      {text: "C. Quality improvement programs", correct: true},
+      {text: "D. Automated documentation systems", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following IoT technologies supports fall prevention in hospitalized patients?",
+    options: [
+      {text: "A. Smart IV pumps", correct: false},
+      {text: "B. Electronic medication charts", correct: false},
+      {text: "C. Smart hospital beds", correct: true},
+      {text: "D. Clinical decision algorithms", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following IoT applications is most relevant for post-discharge patient care?",
+    options: [
+      {text: "A. Diagnostic imaging", correct: false},
+      {text: "B. Inpatient rounding tools", correct: false},
+      {text: "C. Home monitoring sensors", correct: true},
+      {text: "D. Surgical scheduling software", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following describes how emerging technologies improve nursing efficiency?",
+    options: [
+      {text: "A. Increased paperwork", correct: false},
+      {text: "B. Manual data entry", correct: false},
+      {text: "C. Automated data collection", correct: true},
+      {text: "D. Extended documentation time", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following benefits directly contributes to improved patient safety through technology use?",
+    options: [
+      {text: "A. Task delegation", correct: false},
+      {text: "B. Staff expansion", correct: false},
+      {text: "C. Early detection of clinical risks", correct: true},
+      {text: "D. Retrospective performance analysis", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following enables personalized patient education through artificial intelligence?",
+    options: [
+      {text: "A. Standard care pathways", correct: false},
+      {text: "B. Manual teaching materials", correct: false},
+      {text: "C. Data-driven patient insights", correct: true},
+      {text: "D. Generic discharge instructions", correct: false}
+    ]
+  });
+
+  // =========================
+  // Health Information System (HIS) & Health Information Exchanges (HIEs)
+  // =========================
+  QUESTIONS.push({title: 'Health Information System (HIS) & Health Information Exchanges (HIEs)', options: [], isSection: true});
+
+  QUESTIONS.push({
+    title: "Which of the following defines a Health Information System according to the WHO?",
+    options: [
+      {text: "A. A billing platform", correct: false},
+      {text: "B. A clinical documentation tool", correct: false},
+      {text: "C. A system for managing hospital workflows", correct: false},
+      {text: "D. An integrated system supporting health data use and management", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following represents a primary goal of a Health Information System?",
+    options: [
+      {text: "A. Data storage", correct: false},
+      {text: "B. Cost reporting", correct: false},
+      {text: "C. Evidence-based decision-making", correct: true},
+      {text: "D. Individual provider performance tracking", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is classified as a population-based data source in an HIS?",
+    options: [
+      {text: "A. EHR records", correct: false},
+      {text: "B. Disease registries", correct: false},
+      {text: "C. Census and health surveys", correct: true},
+      {text: "D. Hospital admission systems", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is a core component of HIS data management?",
+    options: [
+      {text: "A. Billing", correct: false},
+      {text: "B. Scheduling", correct: false},
+      {text: "C. Data validation", correct: true},
+      {text: "D. Clinical decision support", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following information products support decision-making in an HIS?",
+    options: [
+      {text: "A. Raw datasets", correct: false},
+      {text: "B. Audit trails", correct: false},
+      {text: "C. Reports and dashboards", correct: true},
+      {text: "D. Data entry templates", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following health information systems focuses on individual patient records?",
+    options: [
+      {text: "A. HMIS", correct: false},
+      {text: "B. RIS", correct: false},
+      {text: "C. LIS", correct: false},
+      {text: "D. Electronic Health Record", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is a core feature of an Electronic Health Record?",
+    options: [
+      {text: "A. Staff payroll", correct: false},
+      {text: "B. Facility maintenance", correct: false},
+      {text: "C. Medication management", correct: true},
+      {text: "D. Insurance claim processing", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following goals is supported by real-time access to EHR data?",
+    options: [
+      {text: "A. Staff credentialing", correct: false},
+      {text: "B. Resource allocation", correct: false},
+      {text: "C. Clinical decision-making", correct: true},
+      {text: "D. Institutional accreditation", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following defines Health Information Exchange?",
+    options: [
+      {text: "A. Internal hospital reporting", correct: false},
+      {text: "B. Electronic patient documentation", correct: false},
+      {text: "C. Digital storage of lab results", correct: false},
+      {text: "D. Electronic sharing of health data across organizations", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following purposes is central to Health Information Exchanges?",
+    options: [
+      {text: "A. Medical coding", correct: false},
+      {text: "B. Financial reimbursement", correct: false},
+      {text: "C. Interoperability between systems", correct: true},
+      {text: "D. Provider credential management", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following HIE models supports secure point-to-point communication?",
+    options: [
+      {text: "A. Consumer-mediated exchange", correct: false},
+      {text: "B. Query-based exchange", correct: false},
+      {text: "C. Regional data exchange", correct: false},
+      {text: "D. Directed exchange", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following HIE models allows providers to search for patient data during emergency care?",
+    options: [
+      {text: "A. Directed exchange", correct: false},
+      {text: "B. Consumer-mediated exchange", correct: false},
+      {text: "C. Query-based exchange", correct: true},
+      {text: "D. Patient portal exchange", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following HIE models enables patients to control data sharing?",
+    options: [
+      {text: "A. Regional exchange", correct: false},
+      {text: "B. Query-based exchange", correct: false},
+      {text: "C. Directed exchange", correct: false},
+      {text: "D. Consumer-mediated exchange", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following describes the relationship between EHRs and HIEs?",
+    options: [
+      {text: "A. Both store imaging data", correct: false},
+      {text: "B. EHRs replace HIEs", correct: false},
+      {text: "C. HIEs generate clinical data", correct: false},
+      {text: "D. EHRs supply data to HIE networks", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following interoperability standards supports EHR data exchange?",
+    options: [
+      {text: "A. ICD", correct: false},
+      {text: "B. CPT", correct: false},
+      {text: "C. HL7 and FHIR", correct: true},
+      {text: "D. DRG classification", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following benefits of EHRs directly improves patient safety?",
+    options: [
+      {text: "A. Automated billing", correct: false},
+      {text: "B. Enhanced decision support", correct: true},
+      {text: "C. Staff scheduling integration", correct: false},
+      {text: "D. Facility resource management", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following operational benefits results from EHR and HIE adoption?",
+    options: [
+      {text: "A. Increased paperwork", correct: false},
+      {text: "B. Reduced system access", correct: false},
+      {text: "C. Improved workflow efficiency", correct: true},
+      {text: "D. Extended documentation time", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following challenges commonly affects EHR and HIE implementation?",
+    options: [
+      {text: "A. Data visualization", correct: false},
+      {text: "B. Interoperability across vendors", correct: true},
+      {text: "C. Clinical documentation standards", correct: false},
+      {text: "D. Patient engagement strategies", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following responsibilities reflects the nurseís role in EHR and HIE use?",
+    options: [
+      {text: "A. Software coding", correct: false},
+      {text: "B. Network administration", correct: false},
+      {text: "C. Accurate clinical documentation", correct: true},
+      {text: "D. Vendor contract negotiation", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following future trends involves enhanced security for health data exchange?",
+    options: [
+      {text: "A. Mobile charting", correct: false},
+      {text: "B. Cloud storage expansion", correct: false},
+      {text: "C. Blockchain-based HIEs", correct: true},
+      {text: "D. Paperless documentation", correct: false}
+    ]
+  });
+
+  // =========================
+  // Informatics in Nursing Education and Research
+  // =========================
+  QUESTIONS.push({title: 'Informatics in Nursing Education and Research', options: [], isSection: true});
+
+  QUESTIONS.push({
+    title: "Which of the following describes nursing informatics in education?",
+    options: [
+      {text: "A. Clinical documentation", correct: false},
+      {text: "B. Technology for hospital billing", correct: false},
+      {text: "C. Application of ICTs to support nursing learning", correct: true},
+      {text: "D. Integration of financial systems in healthcare", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following disciplines forms part of nursing informatics in education?",
+    options: [
+      {text: "A. Sociology", correct: false},
+      {text: "B. Nursing science", correct: true},
+      {text: "C. Marketing science", correct: false},
+      {text: "D. Healthcare economics", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following explains why informatics is essential in nursing education?",
+    options: [
+      {text: "A. Paper record reduction", correct: false},
+      {text: "B. Expansion of nursing roles", correct: true},
+      {text: "C. Increased administrative reporting", correct: false},
+      {text: "D. Standardization of classroom lectures", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following defines information literacy in nursing practice?",
+    options: [
+      {text: "A. Technical device operation", correct: false},
+      {text: "B. Ability to recognize information needs", correct: true},
+      {text: "C. Use of simulation laboratories", correct: false},
+      {text: "D. Management of electronic equipment", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is a component of information literacy?",
+    options: [
+      {text: "A. Hardware installation", correct: false},
+      {text: "B. Network configuration", correct: false},
+      {text: "C. Evaluating information sources", correct: true},
+      {text: "D. Programming clinical software", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following nursing activities demonstrates applying information to practice?",
+    options: [
+      {text: "A. Memorizing procedures", correct: false},
+      {text: "B. Attending lectures", correct: false},
+      {text: "C. Implementing evidence-based protocols", correct: true},
+      {text: "D. Reviewing course syllabi", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following outcomes is supported by strong information literacy skills?",
+    options: [
+      {text: "A. Task automation", correct: false},
+      {text: "B. Clinical reasoning", correct: true},
+      {text: "C. Equipment maintenance", correct: false},
+      {text: "D. System troubleshooting", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following defines computer literacy in nursing education?",
+    options: [
+      {text: "A. Ability to design software", correct: false},
+      {text: "B. Use of computers and digital tools", correct: true},
+      {text: "C. Management of health databases", correct: false},
+      {text: "D. Development of informatics policies", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is a core component of computer literacy?",
+    options: [
+      {text: "A. Ethical reasoning", correct: false},
+      {text: "B. Data analytics", correct: false},
+      {text: "C. Word processing and data entry", correct: true},
+      {text: "D. Instructional design planning", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following computer literacy skills supports patient data protection?",
+    options: [
+      {text: "A. Clinical documentation", correct: false},
+      {text: "B. Software updating", correct: false},
+      {text: "C. Data security and confidentiality", correct: true},
+      {text: "D. Internet searching techniques", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following describes the relationship between computer literacy and nursing informatics?",
+    options: [
+      {text: "A. Parallel competencies", correct: false},
+      {text: "B. Independent skill sets", correct: false},
+      {text: "C. Foundation for informatics tools", correct: true},
+      {text: "D. Replacement for clinical knowledge", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following framework explains progression from data to clinical judgment?",
+    options: [
+      {text: "A. EBP model", correct: false},
+      {text: "B. Systems theory", correct: false},
+      {text: "C. DIKW framework", correct: true},
+      {text: "D. Learning taxonomy", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following represents the ìKnowledgeî level in the DIKW framework?",
+    options: [
+      {text: "A. Collecting raw values", correct: false},
+      {text: "B. Organizing patient data", correct: false},
+      {text: "C. Applying data to care plans", correct: true},
+      {text: "D. Making expert clinical judgments", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following informatics tools delivers and tracks nursing education content?",
+    options: [
+      {text: "A. EHR simulators", correct: false},
+      {text: "B. Learning management systems", correct: true},
+      {text: "C. Clinical decision dashboards", correct: false},
+      {text: "D. Population health databases", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following tools supports documentation training in nursing education?",
+    options: [
+      {text: "A. Virtual libraries", correct: false},
+      {text: "B. Simulation mannequins", correct: false},
+      {text: "C. Electronic health record simulators", correct: true},
+      {text: "D. Learning analytics dashboards", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following supports lifelong learning for nurses through informatics?",
+    options: [
+      {text: "A. Static textbooks", correct: false},
+      {text: "B. Classroom lectures", correct: false},
+      {text: "C. Adaptive e-learning systems", correct: true},
+      {text: "D. Manual competency checklists", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following contributes to professional development through informatics?",
+    options: [
+      {text: "A. Shift scheduling", correct: false},
+      {text: "B. Digital certification platforms", correct: true},
+      {text: "C. Equipment maintenance logs", correct: false},
+      {text: "D. Facility accreditation systems", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following illustrates clinical practice integration of informatics education?",
+    options: [
+      {text: "A. Paper-based case studies", correct: false},
+      {text: "B. Manual vital sign recording", correct: false},
+      {text: "C. Simulated EHR documentation practice", correct: true},
+      {text: "D. Traditional lecture examinations", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following benefits of informatics education improves patient care?",
+    options: [
+      {text: "A. Increased workload", correct: false},
+      {text: "B. Improved documentation accuracy", correct: true},
+      {text: "C. Expanded administrative duties", correct: false},
+      {text: "D. Longer training requirements", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following challenges affects implementation of informatics in nursing education?",
+    options: [
+      {text: "A. Curriculum overload", correct: false},
+      {text: "B. Unequal digital literacy levels", correct: true},
+      {text: "C. Excessive clinical exposure", correct: false},
+      {text: "D. High student enrollment numbers", correct: false}
+    ]
+  });
+
+  // =========================
+  // DIKW Framework & Nursing Informatics
+  // =========================
+  QUESTIONS.push({title: 'DIKW Framework & Nursing Informatics', options: [], isSection: true});
+
+  QUESTIONS.push({
+    title: "Which of the following best describes the role of electronic health records (EHRs) within the DIKW framework in nursing practice?",
+    options: [
+      {text: "A. They only store wisdom and exclude data", correct: false},
+      {text: "B. They are used solely for research purposes", correct: false},
+      {text: "C. They function only as billing tools", correct: false},
+      {text: "D. They collect raw data such as vital signs and lab results", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following outcomes best illustrates the impact of correctly applying the DIKW framework?",
+    options: [
+      {text: "A. Reduced interprofessional collaboration", correct: false},
+      {text: "B. Delayed recognition of deterioration", correct: false},
+      {text: "C. Increased documentation burden", correct: false},
+      {text: "D. Prompt identification and timely intervention", correct: true}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following describes nursing informatics?",
+    options: [
+      {text: "A. Clinical documentation", correct: false},
+      {text: "B. Computer use in hospitals", correct: false},
+      {text: "C. Integration of nursing, information, and computer sciences", correct: true},
+      {text: "D. Development of medical software systems", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following marked the recognition of nursing informatics as a specialty?",
+    options: [
+      {text: "A. Introduction of computers", correct: false},
+      {text: "B. Global informatics expansion", correct: false},
+      {text: "C. Recognition by the American Nurses Association", correct: true},
+      {text: "D. Widespread adoption of EHRs", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is a primary goal of nursing informatics?",
+    options: [
+      {text: "A. Data storage", correct: false},
+      {text: "B. Technical efficiency", correct: false},
+      {text: "C. Improved clinical decision-making", correct: true},
+      {text: "D. Reduction of healthcare staffing needs", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following represents ìdataî in the DIKW framework?",
+    options: [
+      {text: "A. Vital sign trends", correct: false},
+      {text: "B. Clinical interpretation", correct: false},
+      {text: "C. Raw patient measurements", correct: true},
+      {text: "D. Nursing care decisions", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following best illustrates ìinformationî in nursing practice?",
+    options: [
+      {text: "A. Individual blood pressure values", correct: false},
+      {text: "B. Nurseís clinical experience", correct: false},
+      {text: "C. Organized interpretation of patient data", correct: true},
+      {text: "D. Selection of nursing interventions", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following describes ìknowledgeî within the DIKW framework?",
+    options: [
+      {text: "A. Data collection", correct: false},
+      {text: "B. Information display", correct: false},
+      {text: "C. Clinical interpretation of information", correct: true},
+      {text: "D. Ethical decision-making", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following reflects ìwisdomî in nursing informatics?",
+    options: [
+      {text: "A. Recording vital signs", correct: false},
+      {text: "B. Reviewing patient charts", correct: false},
+      {text: "C. Applying judgment to select interventions", correct: true},
+      {text: "D. Categorizing clinical data sets", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following patient findings represents raw data?",
+    options: [
+      {text: "A. Suspected infection", correct: false},
+      {text: "B. Interpretation of hypotension", correct: false},
+      {text: "C. Blood pressure of 90/60 mmHg", correct: true},
+      {text: "D. Risk of deterioration", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following interpretations reflects the information stage?",
+    options: [
+      {text: "A. Heart rate measurement", correct: false},
+      {text: "B. Oxygen saturation reading", correct: false},
+      {text: "C. Recognition of tachycardia and hypotension", correct: true},
+      {text: "D. Decision to initiate fluids", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following conclusions represents knowledge?",
+    options: [
+      {text: "A. Elevated temperature", correct: false},
+      {text: "B. Reduced oxygen saturation", correct: false},
+      {text: "C. Possible postoperative infection and hypovolemia", correct: true},
+      {text: "D. Administration of analgesics", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following outcomes demonstrates effective application of DIKW?",
+    options: [
+      {text: "A. Complete documentation", correct: false},
+      {text: "B. Accurate data collection", correct: false},
+      {text: "C. Prevention of patient deterioration", correct: true},
+      {text: "D. Increased workload", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following roles does nursing informatics play in practice?",
+    options: [
+      {text: "A. Equipment maintenance", correct: false},
+      {text: "B. Financial management", correct: false},
+      {text: "C. Supporting safe patient-centered care", correct: true},
+      {text: "D. Limiting decision authority", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following is emphasized at the wisdom level of DIKW?",
+    options: [
+      {text: "A. Data accuracy", correct: false},
+      {text: "B. Information structure", correct: false},
+      {text: "C. Ethical and clinical judgment", correct: true},
+      {text: "D. Technical performance", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following developments expanded nursing informatics globally?",
+    options: [
+      {text: "A. Early computer use", correct: false},
+      {text: "B. Specialty recognition", correct: false},
+      {text: "C. Growth of health informatics in the 2000s", correct: true},
+      {text: "D. Paperless documentation", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following observations contributes directly to data collection?",
+    options: [
+      {text: "A. Infection risk assessment", correct: false},
+      {text: "B. Interpretation of trends", correct: false},
+      {text: "C. Measurement of oxygen saturation", correct: true},
+      {text: "D. Evaluation of response to care", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following actions reflects knowledge application?",
+    options: [
+      {text: "A. Recording vital signs", correct: false},
+      {text: "B. Grouping abnormal findings", correct: false},
+      {text: "C. Identifying possible causes of instability", correct: true},
+      {text: "D. Initiating intervention", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following demonstrates how nursing informatics improves outcomes?",
+    options: [
+      {text: "A. Increased documentation", correct: false},
+      {text: "B. Faster data entry", correct: false},
+      {text: "C. Enhanced clinical decision-making", correct: true},
+      {text: "D. Expanded infrastructure", correct: false}
+    ]
+  });
+
+  QUESTIONS.push({
+    title: "Which of the following summarizes the value of the DIKW framework?",
+    options: [
+      {text: "A. Organizes records", correct: false},
+      {text: "B. Improves efficiency", correct: false},
+      {text: "C. Guides transformation from data to wisdom", correct: true},
+      {text: "D. Standardizes documentation", correct: false}
+    ]
+  });
+
+  // =========================
+  // Quiz Engine
+  // =========================
+  const state = { total: 0, answered: 0, correct: 0, incorrect: 0 };
+
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function resetState(){
+    state.total = QUESTIONS.filter(q=>!q.isSection).length;
+    state.answered=0;
+    state.correct=0;
+    state.incorrect=0;
+    updateLive();
+    document.getElementById('summary').style.display='none';
+  }
+
+  function updateLive(){
+    const percent = state.total ? Math.round((state.correct/state.total)*100) : 0;
+    document.getElementById('liveScore').textContent = `Score: ${state.correct} / ${state.total} (${percent}%)`;
+    document.getElementById('liveCorrect').textContent = `Correct: ${state.correct}`;
+    document.getElementById('liveIncorrect').textContent = `Incorrect: ${state.incorrect}`;
+    document.getElementById('liveProgress').textContent = `Progress: ${state.answered} / ${state.total}`;
+  }
+
+  function showSummary(){
+    const s = document.getElementById('summary');
+    const percent = state.total ? Math.round((state.correct/state.total)*100) : 0;
+    s.innerHTML = `<h2>Final Result</h2><p><strong>Score:</strong> ${state.correct} / ${state.total} (${percent}%)</p><p class="muted">Use Retry or Shuffle & Retry to start over.</p>`;
+    s.style.display='block';
+  }
+
+  function renderQuiz(){
+    resetState();
+    const container=document.getElementById('quiz');
+    container.innerHTML='';
+    let qnum=0;
+
+    QUESTIONS.forEach(q=>{
+      if(q.isSection){
+        const h=document.createElement('div');
+        h.className='section';
+        h.textContent=q.title;
+        container.appendChild(h);
+        return;
+      }
+
+      qnum+=1;
+      const card=document.createElement('div');
+      card.className='card';
+
+      const title=document.createElement('div');
+      title.className='q-title';
+      title.textContent=`Q${qnum}. ${q.title}`;
+      card.appendChild(title);
+
+      const list=document.createElement('ul');
+      list.className='options';
+
+      const opts=q.options.map(o=>({...o}));
+      shuffle(opts);
+
+      const feedback=document.createElement('div');
+      feedback.className='feedback';
+      feedback.style.display='none';
+
+      let correctText='';
+      opts.forEach(o=>{ if(o.correct) correctText=o.text; });
+
+      opts.forEach(opt=>{
+        const li=document.createElement('li');
+        const btn=document.createElement('button');
+        btn.className='option';
+        btn.textContent=opt.text;
+        btn.dataset.correct=opt.correct?'true':'false';
+
+        btn.onclick=()=>{
+          if(btn.disabled) return;
+          [...list.querySelectorAll('button.option')].forEach(b=>b.disabled=true);
+
+          if(opt.correct){
+            btn.classList.add('correct');
+            feedback.textContent=`Correct ? ó Running Score: ${state.correct+1} / ${state.total}`;
+            feedback.classList.remove('incorrect');
+            feedback.classList.add('correct');
+            state.correct += 1;
+          } else {
+            btn.classList.add('incorrect');
+            const cor=[...list.querySelectorAll('button.option')].find(b=>b.dataset.correct==='true');
+            if(cor) cor.classList.add('correct');
+            feedback.textContent=`Incorrect ? ó Correct answer: ${correctText}`;
+            feedback.classList.remove('correct');
+            feedback.classList.add('incorrect');
+            state.incorrect += 1;
+          }
+
+          feedback.style.display='block';
+          state.answered += 1;
+          updateLive();
+
+          if(state.answered === state.total){
+            showSummary();
+          }
+        };
+
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+
+      card.appendChild(list);
+      card.appendChild(feedback);
+      container.appendChild(card);
+    });
+  }
+
+  // ? FIXED: Shuffle œ«Œ· ﬂ· ﬁ”„ („⁄ »ﬁ«¡ «·ﬁ”„ ›Êﬁ √”∆· Â)
+  function shuffleAll(){
+    const groups = [];
+    let current = null;
+
+    QUESTIONS.forEach(q => {
+      if (q.isSection) {
+        current = { header: q, items: [] };
+        groups.push(current);
+      } else {
+        if (!current) {
+          current = { header: { title: 'Questions', options: [], isSection: true }, items: [] };
+          groups.push(current);
+        }
+        current.items.push(q);
+      }
+    });
+
+    groups.forEach(g => shuffle(g.items));
+
+    const combined = [];
+    groups.forEach(g => {
+      combined.push(g.header);
+      g.items.forEach(it => combined.push(it));
+    });
+
+    QUESTIONS.splice(0, QUESTIONS.length, ...combined);
+    renderQuiz();
+  }
+
+  function retryAll(){
+    renderQuiz();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // Initial render
+  renderQuiz();
+</script>
+</body>
+</html>
+```
+
+≈–«  »€Ï ŒÌ«— ≈÷«›Ì: **ÌŒ·ÿ «·√ﬁ”«„ ‰›”Â«** (·ﬂ‰ ﬂ· ﬁ”„ ÌŸ· „⁄ √”∆· Â)° ﬁ·¯Ì Ê √÷Ì›Â ·ﬂ »œÊ‰ „« √·„” «·√”∆·….
