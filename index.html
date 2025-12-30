@@ -43,7 +43,7 @@
 </header>
 <main>
   <div class="controls card scoreboard">
-    <div class="pill">aqeelllo.</div>
+    <div class="pill">﴿ وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ ﴾</div>
     <button class="pill" onclick="shuffleAll()">اخلط الاسئلة ي بابا </button>
     <div class="score">
       <span id="liveScore">الدرجة: 0 / TOTAL (0%)</span>
@@ -288,20 +288,31 @@
     options: [
       {text: "A. Billing", correct: false},
       {text: "B. Scheduling", correct: false},
-      {text: "C. Data validation", correct: true},
-      {text: "D. Clinical decision support", correct: false}
+      {text: "C. Data validation", correct: false},
+      {text: "D. Clinical decision support", correct: true}
     ]
   });
+    });
 
   QUESTIONS.push({
-    title: "Which of the following information products support decision-making in an HIS?",
+    title: "Which of the following is a core component of HIS data management?",
     options: [
-      {text: "A. Raw datasets", correct: false},
-      {text: "B. Audit trails", correct: false},
-      {text: "C. Reports and dashboards", correct: true},
-      {text: "D. Data entry templates", correct: false}
+      {text: "A. Billing", correct: false},
+      {text: "B. Scheduling", correct: false},
+      {text: "C. Data validation", correct: false},
+      {text: "D. Clinical decision support", correct: true}
     ]
-  });
+});
+
+QUESTIONS.push({
+  title: "Which of the following frameworks explains the transformation from raw facts to clinical judgment?",
+  options: [
+    { text: "A. Systems theory", correct: false },
+    { text: "B. Evidence-based practice model", correct: false },
+    { text: "C. DIKW framework", correct: true },
+    { text: "D. Quality improvement cycle", correct: false }
+  ]
+});
 
   QUESTIONS.push({
     title: "Which of the following health information systems focuses on individual patient records?",
@@ -1027,6 +1038,7 @@
 
 
 ÅÐÇ ÊÈÛì ÎíÇÑ ÅÖÇÝí: **íÎáØ ÇáÃÞÓÇã äÝÓåÇ** (áßä ßá ÞÓã íÙá ãÚ ÃÓÆáÊå)¡ Þáøí æ ÃÖíÝå áß ÈÏæä ãÇ ÃáãÓ ÇáÃÓÆáÉ.
+
 
 
 
