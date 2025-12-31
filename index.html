@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -280,10 +278,8 @@
       {text: "B. Disease registries", correct: false},
       {text: "C. Census and health surveys", correct: true},
       {text: "D. Hospital admission systems", correct: false}
-
     ]
   });
-   
 
   QUESTIONS.push({
     title: "Which of the following is a core component of HIS data management?",
@@ -292,7 +288,6 @@
       {text: "B. Scheduling", correct: false},
       {text: "C. Data validation", correct: true},
       {text: "D. Clinical decision support", correct: false}
-    
     ]
   });
 
@@ -343,8 +338,6 @@
       {text: "B. Query-based exchange", correct: false},
       {text: "C. Regional data exchange", correct: false},
       {text: "D. Directed exchange", correct: true}
-
- 
     ]
   });
 
@@ -355,7 +348,6 @@
       {text: "B. EHRs replace HIEs", correct: false},
       {text: "C. HIEs generate clinical data", correct: false},
       {text: "D. EHRs supply data to HIE networks", correct: true}
-    
     ]
   });
 
@@ -421,7 +413,6 @@
       {text: "B. Technology for hospital billing", correct: false},
       {text: "C. Application of ICTs to support nursing learning", correct: true},
       {text: "D. Integration of financial systems in healthcare", correct: false}
-
     ]
   });
 
@@ -512,7 +503,6 @@
       {text: "B. Independent skill sets", correct: false},
       {text: "C. Foundation for informatics tools", correct: true},
       {text: "D. Replacement for clinical knowledge", correct: false}
-   
     ]
   });
 
@@ -601,9 +591,6 @@
   // =========================
   QUESTIONS.push({title: 'DIKW Framework & Nursing Informatics', options: [], isSection: true});
 
-
-
-
   QUESTIONS.push({
     title: "Which of the following describes nursing informatics?",
     options: [
@@ -611,7 +598,6 @@
       {text: "B. Computer use in hospitals", correct: false},
       {text: "C. Integration of nursing, information, and computer sciences", correct: true},
       {text: "D. Development of medical software systems", correct: false}
-    
     ]
   });
 
@@ -722,7 +708,6 @@
       {text: "B. Information structure", correct: false},
       {text: "C. Ethical and clinical judgment", correct: true},
       {text: "D. Technical performance", correct: false}
-  
     ]
   });
 
@@ -765,6 +750,7 @@
       {text: "D. Standardizes documentation", correct: false}
     ]
   });
+
   // =========================
   // Nursing Administration & Readiness
   // =========================
@@ -895,6 +881,9 @@
   // =========================
   const state = { total: 0, answered: 0, correct: 0, incorrect: 0 };
 
+  // ✅ جديد: نجمع الأسئلة اللي غلطتها هنا
+  const wrongQuestions = [];
+
   function shuffle(arr){
     for(let i=arr.length-1;i>0;i--){
       const j=Math.floor(Math.random()*(i+1));
@@ -908,6 +897,10 @@
     state.answered=0;
     state.correct=0;
     state.incorrect=0;
+
+    // ✅ جديد: نفرّغ قائمة الغلط عند إعادة الاختبار
+    wrongQuestions.length = 0;
+
     updateLive();
     document.getElementById('summary').style.display='none';
   }
@@ -920,10 +913,23 @@
     document.getElementById('liveProgress').textContent = `التقدم: ${state.answered} / ${state.total}`;
   }
 
+  // ✅ جديد: زر لإعادة الغلط فقط
   function showSummary(){
     const s = document.getElementById('summary');
     const percent = state.total ? Math.round((state.correct/state.total)*100) : 0;
-    s.innerHTML = `<h2>Final Result</h2><p><strong>Score:</strong> ${state.correct} / ${state.total} (${percent}%)</p><p class="muted">Use Retry or Shuffle & Retry to start over.</p>`;
+
+    const hasWrong = wrongQuestions.length > 0;
+
+    s.innerHTML = `
+      <h2>Final Result</h2>
+      <p><strong>Score:</strong> ${state.correct} / ${state.total} (${percent}%)</p>
+      <p class="muted">Use Retry or Shuffle & Retry to start over.</p>
+      ${
+        hasWrong
+          ? `<button class="btn" onclick="retryWrongOnly()">اعِد الأسئلة اللي غلطت فيها فقط (${wrongQuestions.length})</button>`
+          : `<p class="muted">ما شاء الله ✅ ما عندك أخطاء.</p>`
+      }
+    `;
     s.style.display='block';
   }
 
@@ -989,6 +995,11 @@
             feedback.classList.remove('correct');
             feedback.classList.add('incorrect');
             state.incorrect += 1;
+
+            // ✅ جديد: خزّن السؤال الغلط (مرة واحدة فقط)
+            if(!wrongQuestions.includes(q)){
+              wrongQuestions.push(q);
+            }
           }
 
           feedback.style.display='block';
@@ -1010,7 +1021,38 @@
     });
   }
 
-  // ? FIXED: Shuffle ÏÇÎá ßá ÞÓã (ãÚ ÈÞÇÁ ÇáÞÓã ÝæÞ ÃÓÆáÊå)
+  // ✅ جديد: يعيد عرض الاختبار من الأسئلة الغلط فقط (مع الأقسام)
+  function retryWrongOnly(){
+    if(wrongQuestions.length === 0){
+      // ما فيه غلط، نعيد العادي
+      retryAll();
+      return;
+    }
+
+    const combined = [];
+    let currentHeader = null;
+
+    wrongQuestions.forEach(q => {
+      // نحدد القسم من QUESTIONS الأصلية: آخر isSection قبل السؤال
+      for(let i=0;i<QUESTIONS.length;i++){
+        if(QUESTIONS[i].isSection) currentHeader = QUESTIONS[i];
+        if(QUESTIONS[i] === q) break;
+      }
+
+      if(currentHeader && !combined.includes(currentHeader)){
+        combined.push(currentHeader);
+      }
+      combined.push(q);
+    });
+
+    // استبدال QUESTIONS بالمجموعة الجديدة
+    QUESTIONS.splice(0, QUESTIONS.length, ...combined);
+
+    renderQuiz();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ✅ Shuffle: يخلط داخل كل قسم
   function shuffleAll(){
     const groups = [];
     let current = null;
@@ -1050,17 +1092,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
